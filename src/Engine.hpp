@@ -58,7 +58,6 @@ private:
     bool				m_bQuit;
 
     sf::Clock			m_frameClock;
-    sf::Time			m_totalTime;
     sf::Time			m_frameElapsedTime;
     sf::Time			m_frameGoalTime;
     sf::Time			m_frameActualTime;
@@ -68,16 +67,11 @@ private:
     bool				m_bLockFrameRate;
 
     glm::vec3			m_camPosition;
-    glm::vec3			m_position;
-    GLfloat				m_rotation;
-    glm::mat4			m_transform;
     glm::mat4			m_camera;
     glm::mat4			m_perspective;
     glm::mat4			m_viewProj;
 
     GLuint				m_shader;
-    GLuint				m_meshBufObj;
-    GLuint				m_transfUniform;
     GLuint				m_viewProjUniform;
 
 };

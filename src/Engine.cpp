@@ -4,58 +4,6 @@
 #include <fstream>
 #include "Engine.hpp"
 
-const float vertexData[] = {
-    // Position
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	 1.0f,	1.0f,
-
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-    -1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-     1.0f,	-1.0f,	-1.0f,	1.0f,
-
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     1.0f,	-1.0f,	-1.0f,	1.0f,
-     1.0f,	-1.0f,	 1.0f,	1.0f,
-
-     1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-
-     1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-     1.0f,	-1.0f,	-1.0f,	1.0f,
-
-    // Color
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-};
-
 Engine::Engine()
     : m_window(
             sf::VideoMode(800, 600),
@@ -79,12 +27,6 @@ Engine::~Engine()
 
 void Engine::init()
 {
-    // Init vertex / index buffer
-    glGenBuffers	( 1, &m_meshBufObj );
-    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj );
-    glBufferData	( GL_ARRAY_BUFFER,          sizeof(vertexData), vertexData, GL_STATIC_DRAW );
-    glBindBuffer	( GL_ARRAY_BUFFER,          0 );
-
     // Load the shaders
     std::vector<GLuint> shaderList;
 
@@ -96,12 +38,7 @@ void Engine::init()
     std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
 
     // Set uniforms
-    m_transfUniform		= glGetUniformLocation(m_shader, "transform");
     m_viewProjUniform	= glGetUniformLocation(m_shader, "viewProj");
-
-    // Position / Transformation
-    m_position		= glm::vec3(0.0f);
-    m_transform     = glm::translate(glm::mat4(1.0f), m_position);
 
     // Camera & Perspective
     m_camPosition   = glm::vec3(0.0f, 0.0f, 5.0f);
@@ -125,8 +62,7 @@ void Engine::init()
 
 void Engine::release()
 {
-    glDeleteBuffers	( 1, &m_meshBufObj	);
-    glDeleteProgram	( m_shader			);
+    glDeleteProgram	( m_shader);
 }
 
 void Engine::run()
@@ -157,16 +93,6 @@ void Engine::event()
 
 void Engine::logic()
 {
-    // update position
-    m_totalTime		+= m_frameElapsedTime;
-    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds()) * 1.0f;
-    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds()) * 1.0f;
-
-    // update rotation
-    m_rotation		+= 1.f * m_frameElapsedTime.asSeconds();
-
-    m_transform 	= glm::translate	( glm::mat4(1.0f), m_position	);
-    m_transform 	= glm::rotate		( m_transform, m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
 }
 
 void Engine::render()
@@ -178,26 +104,11 @@ void Engine::render()
     // Shader to use
     glUseProgram        ( m_shader  );
 
-    // Data to use
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj	);
-    glEnableVertexAttribArray	( ShaderID::Position	);
-    glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*3*6)	);
+    // Cleanup
+    glUseProgram      	( 0 );
 
     // Update data given to shader
-    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform)	);
     glUniformMatrix4fv	( m_viewProjUniform,	1, GL_FALSE, glm::value_ptr(m_viewProj)	    );
-
-    // Actual Draw
-    glDrawArrays		( GL_TRIANGLES, 0, 18	);
-
-    // Cleanup
-    glDisableVertexAttribArray	( ShaderID::Position	);
-    glDisableVertexAttribArray	( ShaderID::Color		);
-    glBindBuffer				( GL_ARRAY_BUFFER, 0			);
-    glBindBuffer  		      	( GL_ELEMENT_ARRAY_BUFFER, 0    );
-    glUseProgram  		      	( 0 );
 
     // Draw the FPS meter with SFML
     m_window.pushGLStates();
@@ -210,6 +121,7 @@ void Engine::render()
 
 void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
 {
+    // Our OpenGl side
     m_perspective	= glm::perspective(
         70.f,
         in_uiWidth / (float) in_uiHeight,
@@ -220,6 +132,9 @@ void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
     m_viewProj = m_perspective * m_camera;
 
     glViewport(0, 0, (GLsizei) in_uiWidth, (GLsizei) in_uiHeight);
+
+    // SFML side
+    m_window.setView(sf::View(sf::FloatRect(0.0f, 0.0f, in_uiWidth, in_uiHeight)));
 }
 
 void Engine::updateFpsCount()
