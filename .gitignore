@@ -1,0 +1,10 @@
+
+build/*
+!build/CMakeLists.txt
+!build/*.cmake
+CMakeLists.txt.user
+tags
+**/.*.swp
+
+
+
