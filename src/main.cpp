@@ -6,12 +6,12 @@
 
 int main(int argc, char* argv[])
 {
-	Engine eng;
+    Engine eng;
 
-	eng.init();
-	eng.run();
-	eng.render();
+    eng.init();
+    eng.run();
+    eng.release();
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 

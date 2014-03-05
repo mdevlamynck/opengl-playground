@@ -4,6 +4,8 @@
 #include <fstream>
 #include "Engine.hpp"
 
+/******************************************************************************/
+
 const float pyramidVertexData[] = {
     // Position
      0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
@@ -31,6 +33,8 @@ const GLshort pyramidIndexData[] = {
     3,	2, 	1,
     3,	1,	4,
 };
+
+/******************************************************************************/
 
 //const float cubeVertexData[] = {
 //    // Position
@@ -201,6 +205,8 @@ const GLshort cubeIndexData[] = {
 
 };
 
+/******************************************************************************/
+
 Engine::Engine()
     : m_window(
             sf::VideoMode(800, 600),
@@ -317,6 +323,8 @@ void Engine::release()
     glDeleteProgram	        ( m_shader			);
 }
 
+/******************************************************************************/
+
 void Engine::run()
 {
     m_frameClock.restart();
@@ -330,6 +338,8 @@ void Engine::run()
         updateFpsCount();
     }
 }
+
+/******************************************************************************/
 
 void Engine::event()
 {
@@ -403,6 +413,8 @@ void Engine::render()
     m_window.display();
 }
 
+/******************************************************************************/
+
 void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
 {
     // Our OpenGl side
@@ -420,6 +432,8 @@ void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
     // SFML side
     m_window.setView(sf::View(sf::FloatRect(0.0f, 0.0f, in_uiWidth, in_uiHeight)));
 }
+
+/******************************************************************************/
 
 void Engine::updateFpsCount()
 {
@@ -442,6 +456,8 @@ void Engine::updateFpsCount()
     oss << (int) m_fps;
     m_fpsMeter.setString(oss.str());
 }
+
+/******************************************************************************/
 
 GLuint Engine::createShader(GLenum in_eShaderType, const std::string in_path)
 {
@@ -526,3 +542,6 @@ void Engine::loadShader(const std::string in_path, std::string& out_code)
         getchar();
     }
 }
+
+/******************************************************************************/
+
