@@ -112,17 +112,21 @@ void Engine::init()
 {
     // Init vertex / index buffer
     glGenBuffers	( 2, m_meshBufObj );
+    glGenBuffers	( 2, m_indexBufObj );
+
+    // Pyramid
     glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Pyramid] );
     glBufferData	( GL_ARRAY_BUFFER,          sizeof(pyramidVertexData), pyramidVertexData, GL_STATIC_DRAW );
-    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Cube] );
-    glBufferData	( GL_ARRAY_BUFFER,          sizeof(cubeVertexData), cubeVertexData, GL_STATIC_DRAW );
-    glBindBuffer	( GL_ARRAY_BUFFER,          0 );
-
-    glGenBuffers	( 2, m_indexBufObj );
     glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Pyramid] );
     glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(pyramidIndexData),  pyramidIndexData,  GL_STATIC_DRAW );
+
+    // Cube
+    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Cube] );
+    glBufferData	( GL_ARRAY_BUFFER,          sizeof(cubeVertexData), cubeVertexData, GL_STATIC_DRAW );
     glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Cube] );
     glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(cubeIndexData),  cubeIndexData,  GL_STATIC_DRAW );
+
+    glBindBuffer	( GL_ARRAY_BUFFER,          0 );
     glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  0 );
 
     // Load the shaders
@@ -164,12 +168,39 @@ void Engine::init()
     glEnable	( GL_CULL_FACE	);
     glCullFace	( GL_BACK		);
     glFrontFace	( GL_CW			);
+
+    // VAOs
+    glGenVertexArrays			( 2, m_vao	);
+
+    // Pyramid VAO
+    glBindVertexArray			( m_vao[ObjectId::Pyramid]	);
+    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Pyramid]	);
+    glEnableVertexAttribArray	( ShaderID::Position	);
+    glEnableVertexAttribArray	( ShaderID::Color		);
+    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
+    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*5)	);
+    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Pyramid]	);
+
+    // Cude VAO
+    glBindVertexArray			( m_vao[ObjectId::Cube]	);
+    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Cube]	);
+    glEnableVertexAttribArray	( ShaderID::Position	);
+    glEnableVertexAttribArray	( ShaderID::Color		);
+    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
+    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*8)	);
+    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Cube]	);
+
+    glBindVertexArray			( 0	);
+
+    glDisableVertexAttribArray	( ShaderID::Position	);
+    glDisableVertexAttribArray	( ShaderID::Color		);
 }
 
 void Engine::release()
 {
     glDeleteBuffers	        ( 2, m_meshBufObj	);
     glDeleteBuffers	        ( 2, m_indexBufObj	);
+    glDeleteVertexArrays	( 2, m_vao			);
     glDeleteProgram	        ( m_shader			);
 }
 
@@ -232,41 +263,23 @@ void Engine::render()
     // Update data given to shader
     glUniformMatrix4fv	( m_viewProjUniform,	1, GL_FALSE, glm::value_ptr(m_viewProj)	    );
 
-
     // Pyramid
+    glBindVertexArray	( m_vao[ObjectId::Pyramid]	);
     glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Pyramid])	);
-
-    // Data to use
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Pyramid]	);
-    glEnableVertexAttribArray	( ShaderID::Position	);
-    glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*5)	);
-    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Pyramid]    );
 
     // Actual Draw
     glDrawElements      ( GL_TRIANGLES, 18, GL_UNSIGNED_SHORT, 0    );
 
     // Cube
+    glBindVertexArray	( m_vao[ObjectId::Cube]	);
     glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Cube])	);
-
-    // Data to use
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Cube]	);
-    glEnableVertexAttribArray	( ShaderID::Position	);
-    glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*8)	);
-    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Cube]    );
 
     // Actual Draw
     glDrawElements      ( GL_TRIANGLES, 3*2*6, GL_UNSIGNED_SHORT, 0    );
 
     // Cleanup
-    glDisableVertexAttribArray	( ShaderID::Position	);
-    glDisableVertexAttribArray	( ShaderID::Color		);
-    glBindBuffer				( GL_ARRAY_BUFFER, 0			);
-    glBindBuffer  		      	( GL_ELEMENT_ARRAY_BUFFER, 0    );
-    glUseProgram  		      	( 0 );
+    glBindVertexArray	( 0	);
+    glUseProgram  		( 0 );
 
     // Draw the FPS meter with SFML
     m_window.pushGLStates();

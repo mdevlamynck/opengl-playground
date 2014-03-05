@@ -87,6 +87,7 @@ private:
     glm::mat4			m_viewProj;
 
     GLuint				m_shader;
+    GLuint				m_vao			[2];
     GLuint				m_meshBufObj	[2];
     GLuint				m_indexBufObj	[2];
     GLuint				m_transfUniform;
