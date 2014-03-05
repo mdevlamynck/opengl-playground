@@ -51,8 +51,10 @@ void Engine::init()
     resize(m_window.getSize().x, m_window.getSize().y);
 
     // Z Buffer
-    glEnable    ( GL_DEPTH_TEST );
-    glDepthFunc ( GL_LESS       );
+    glEnable		( GL_DEPTH_TEST );
+    glDepthMask		( GL_TRUE		);
+    glDepthFunc 	( GL_LESS       );
+	glDepthRange	( 0.0f, 1.0f	);
 
     // Face culling
     glEnable	( GL_CULL_FACE	);
@@ -99,6 +101,7 @@ void Engine::render()
 {
     // Clear buffers
     glClearColor        ( 0.f, 0.f, 0.f, 0.f    );
+    glClearDepth        ( 1.f					);
     glClear             ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     // Shader to use
