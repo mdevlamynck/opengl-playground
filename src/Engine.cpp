@@ -41,7 +41,7 @@ Engine::Engine()
     )
     , m_bQuit			( false	)
     , m_frameGoalTime	( sf::milliseconds(16) )
-    , m_bLockFrameRate	( true	)
+    , m_bLockFrameRate	( false	)
 {
     assert( m_fpsFont.loadFromFile("/usr/share/fonts/TTF/FreeMono.ttf") && "Font not found" );
     m_fpsMeter.setFont(m_fpsFont);
