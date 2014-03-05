@@ -65,7 +65,7 @@ Engine::Engine()
     )
     , m_bQuit			( false	)
     , m_frameGoalTime	( sf::milliseconds(16) )
-    , m_bLockFrameRate	( true	)
+    , m_bLockFrameRate	( false	)
 {
     assert( m_fpsFont.loadFromFile("/usr/share/fonts/TTF/FreeMono.ttf") && "Font not found" );
     m_fpsMeter.setFont(m_fpsFont);
@@ -210,6 +210,7 @@ void Engine::render()
 
 void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
 {
+    // Our OpenGl side
     m_perspective	= glm::perspective(
         70.f,
         in_uiWidth / (float) in_uiHeight,
@@ -220,6 +221,9 @@ void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
     m_viewProj = m_perspective * m_camera;
 
     glViewport(0, 0, (GLsizei) in_uiWidth, (GLsizei) in_uiHeight);
+
+    // SFML side
+    m_window.setView(sf::View(sf::FloatRect(0.0f, 0.0f, in_uiWidth, in_uiHeight)));
 }
 
 void Engine::updateFpsCount()
