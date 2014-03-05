@@ -2,11 +2,15 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
+
 #include "Engine.hpp"
+
+#include "IndexedDrawNode.hpp"
+#include "ArrayDrawNode.hpp"
 
 /******************************************************************************/
 
-const float pyramidVertexData[] = {
+GLfloat pyramidVertexData[] = {
     // Position
      0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
      1.0f,	-1.0f,	 1.0f,	1.0f,	// 1
@@ -22,7 +26,7 @@ const float pyramidVertexData[] = {
      0.0f,	 0.0f,	 0.0f,	1.0f,	// 4
 };
 
-const GLshort pyramidIndexData[] = {
+GLshort pyramidIndexData[] = {
     // Pyramide faces
     0, 	1, 	2,
     0, 	2, 	3,
@@ -64,7 +68,34 @@ const GLshort pyramidIndexData[] = {
 //     1.0f,	 1.0f,	 1.0f,	1.0f,	// 7
 //};
 
-const float cubeVertexData[] = {
+//const GLshort cubeIndexData[] = {
+//    // Front face
+//    0,	1,	2,
+//    0,	2,	3,
+//
+//    // Left Face
+//    4,	5,	1,
+//    4,	1,	0,
+//
+//    // Back Face
+//    7,	6,	5,
+//    7,	5,	4,
+//
+//    // Right Face
+//    3,	2,	6,
+//    3,	6,	7,
+//
+//    // Bottom Face
+//    4,	0,	3,
+//    4,	3,	7,
+//
+//    // Top Face
+//    1,	5,	6,
+//    1,	6,	2,
+//
+//};
+
+GLfloat cubeVertexData[] = {
     // Position
     // Front face
     -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
@@ -122,87 +153,58 @@ const float cubeVertexData[] = {
 
     // Color
     // Front face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
 
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-    // Left Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-    // Back Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-    // Right Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-    // Bottom Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-    // Top Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-};
-
-
-
-const GLshort cubeIndexData[] = {
-    // Front face
-    0,	1,	2,
-    0,	2,	3,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
 
     // Left Face
-    4,	5,	1,
-    4,	1,	0,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 1
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 0
 
     // Back Face
-    7,	6,	5,
-    7,	5,	4,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 7
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 5
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 7
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 4
 
     // Right Face
-    3,	2,	6,
-    3,	6,	7,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 3
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 3
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 7
 
     // Bottom Face
-    4,	0,	3,
-    4,	3,	7,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 3
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 7
 
     // Top Face
-    1,	5,	6,
-    1,	6,	2,
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
 
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
 };
 
 /******************************************************************************/
@@ -230,25 +232,6 @@ Engine::~Engine()
 
 void Engine::init()
 {
-    // Init vertex / index buffer
-    glGenBuffers	( 2, m_meshBufObj );
-    glGenBuffers	( 2, m_indexBufObj );
-
-    // Pyramid
-    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Pyramid] );
-    glBufferData	( GL_ARRAY_BUFFER,          sizeof(pyramidVertexData), pyramidVertexData, GL_STATIC_DRAW );
-    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Pyramid] );
-    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(pyramidIndexData),  pyramidIndexData,  GL_STATIC_DRAW );
-
-    // Cube
-    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Cube] );
-    glBufferData	( GL_ARRAY_BUFFER,          sizeof(cubeVertexData), cubeVertexData, GL_STATIC_DRAW );
-//    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Cube] );
-//    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(cubeIndexData),  cubeIndexData,  GL_STATIC_DRAW );
-
-    glBindBuffer	( GL_ARRAY_BUFFER,          0 );
-    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  0 );
-
     // Load the shaders
     std::vector<GLuint> shaderList;
 
@@ -260,13 +243,7 @@ void Engine::init()
     std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
 
     // Set uniforms
-    m_transfUniform		= glGetUniformLocation(m_shader, "transform");
-    m_viewProjUniform	= glGetUniformLocation(m_shader, "viewProj");
-
-    // Position / Transformation
-    m_position		= glm::vec3(0.0f);
-    m_transform[ObjectId::Pyramid]	= glm::translate(glm::mat4(1.0f), m_position);
-    m_transform[ObjectId::Cube]		= glm::translate(glm::mat4(1.0f), m_position);
+    m_mvpUniform		= glGetUniformLocation(m_shader, "mvp");
 
     // Camera & Perspective
     m_camPosition   = glm::vec3(0.0f, 2.0f, 7.0f);
@@ -285,42 +262,41 @@ void Engine::init()
     glDepthRange	( 0.0f, 1.0f	);
 
     // Face culling
-    glEnable	( GL_CULL_FACE	);
-    glCullFace	( GL_BACK		);
-    glFrontFace	( GL_CW			);
+    glEnable		( GL_CULL_FACE	);
+    glCullFace		( GL_BACK		);
+    glFrontFace		( GL_CW			);
 
-    // VAOs
-    glGenVertexArrays			( 2, m_vao	);
+    // Set scene content
+    m_pSceneRoot	= new SceneNode			();
+//    m_pScenePyramid	= new IndexedDrawNode	( pyramidVertexData,	4*5*2,		pyramidIndexData,	3*(4+2*1)	);
+    m_pSceneCube	= new ArrayDrawNode		( cubeVertexData,		4*3*2*6*2	);
 
-    // Pyramid VAO
-    glBindVertexArray			( m_vao[ObjectId::Pyramid]	);
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Pyramid]	);
-    glEnableVertexAttribArray	( ShaderID::Position	);
-    glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*5)	);
-    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Pyramid]	);
+//    m_pScenePyramid	->setTranslation	( glm::vec3( 1.0f, 0.0f, 0.0f)	);
+    m_pSceneCube	->setTranslation	( glm::vec3(-0.0f, 0.0f, 0.0f)	);
 
-    // Cude VAO
-    glBindVertexArray			( m_vao[ObjectId::Cube]	);
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Cube]	);
-    glEnableVertexAttribArray	( ShaderID::Position	);
-    glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0						);
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*3*2*6)	);
+//    m_pScenePyramid	->setScale	( glm::vec3(1.0f)	);
+    m_pSceneCube	->setScale	( glm::vec3(1.0f)	);
 
-    glBindVertexArray			( 0	);
+//    m_pSceneRoot	->addChild	( m_pScenePyramid );
+    m_pSceneRoot	->addChild	( m_pSceneCube );
 
-    glDisableVertexAttribArray	( ShaderID::Position	);
-    glDisableVertexAttribArray	( ShaderID::Color		);
+    SceneNode::setMvpUniform		( m_mvpUniform );
+    SceneNode::setPositionShader	( 0	);
+    SceneNode::setColorShader		( 1 );
+    SceneNode::setCameraPerspective	( &m_viewProj	);
+
+    m_rotation		= 0.0f;
 }
 
 void Engine::release()
 {
-    glDeleteBuffers	        ( 2, m_meshBufObj	);
-    glDeleteBuffers	        ( 2, m_indexBufObj	);
-    glDeleteVertexArrays	( 2, m_vao			);
-    glDeleteProgram	        ( m_shader			);
+    glDeleteProgram	( m_shader	);
+
+    delete m_pSceneRoot;
+
+    m_pSceneRoot	= NULL;
+//    m_pScenePyramid	= NULL;
+    m_pSceneCube	= NULL;
 }
 
 /******************************************************************************/
@@ -356,53 +332,29 @@ void Engine::event()
 void Engine::logic()
 {
     // update position
-    m_totalTime		+= m_frameElapsedTime;
+    m_rotation		= 1.0f * m_frameElapsedTime.asSeconds();
 
-    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds()) * 2.0f;
-    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds()) * 2.0f;
-    m_transform[ObjectId::Pyramid] 	= glm::translate	( glm::mat4(1.0f), m_position	);
+//    m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 
-    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds() + M_PI) * 2.0f;
-    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds() + M_PI) * 2.0f;
-    m_transform[ObjectId::Cube] 	= glm::translate	( glm::mat4(1.0f), m_position	);
-
-    // update rotation
-    m_rotation		+= 1.f * m_frameElapsedTime.asSeconds();
-
-    m_transform[ObjectId::Pyramid] 	= glm::rotate		( m_transform[ObjectId::Pyramid],	m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
-    m_transform[ObjectId::Cube] 	= glm::rotate		( m_transform[ObjectId::Cube],		m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
+//    m_pScenePyramid	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pSceneCube	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 }
 
 void Engine::render()
 {
     // Clear buffers
-    glClearColor        ( 0.f, 0.f, 0.f, 0.f    );
-    glClearDepth        ( 1.f					);
-    glClear             ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClearColor        	( 0.f, 0.f, 0.f, 0.f    );
+    glClearDepth        	( 1.f					);
+    glClear             	( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     // Shader to use
-    glUseProgram        ( m_shader  );
+    glUseProgram        	( m_shader  );
 
-    // Update data given to shader
-    glUniformMatrix4fv	( m_viewProjUniform,	1, GL_FALSE, glm::value_ptr(m_viewProj)	    );
-
-    // Pyramid
-    glBindVertexArray	( m_vao[ObjectId::Pyramid]	);
-    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Pyramid])	);
-
-    // Actual Draw
-    glDrawElements      ( GL_TRIANGLES, 18, GL_UNSIGNED_SHORT, 0    );
-
-    // Cube
-    glBindVertexArray	( m_vao[ObjectId::Cube]	);
-    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Cube])	);
-
-    // Actual Draw
-    glDrawArrays		( GL_TRIANGLES, 0, 3*2*6	);
+    // Draw
+    m_pSceneRoot->render	( m_matrixStack	);
 
     // Cleanup
-    glBindVertexArray	( 0	);
-    glUseProgram  		( 0 );
+    glUseProgram  			( 0 );
 
     // Draw the FPS meter with SFML
     m_window.pushGLStates();

@@ -7,7 +7,7 @@
 
 /******************************************************************************/
 
-IndexedDrawNode::IndexedDrawNode(float* in_pData, size_t in_sizeData, GLshort* in_pIndex, size_t in_sizeIndex)
+IndexedDrawNode::IndexedDrawNode(GLfloat* in_pData, size_t in_sizeData, GLshort* in_pIndex, size_t in_sizeIndex)
     : m_sizeData	( in_sizeData	)
     , m_sizeIndex	( in_sizeIndex	)
 {
@@ -28,7 +28,7 @@ IndexedDrawNode::IndexedDrawNode(float* in_pData, size_t in_sizeData, GLshort* i
     glEnableVertexAttribArray	( s_positionShader	);
     glEnableVertexAttribArray	( s_colorShader		);
     glVertexAttribPointer		( s_positionShader,	4,	GL_FLOAT, GL_FALSE, 0, 0);
-    glVertexAttribPointer		( s_colorShader,	4,	GL_FLOAT, GL_FALSE, 0, (void*) (sizeof(float) * m_sizeData / 2)	);
+    glVertexAttribPointer		( s_colorShader,	4,	GL_FLOAT, GL_FALSE, 0, (void*) (sizeof(GLfloat) * m_sizeData / 2)	);
     glBindBuffer				( GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer	);
 
     glBindVertexArray			( 0	);
@@ -51,12 +51,12 @@ void IndexedDrawNode::render(MatrixStack& in_stack)
     in_stack.push();
 
     // Apply Node Transformations
-    glm::mat4& current	=	in_stack.get();
-    current				*=	s_cameraPerspective * m_scale * m_rotation * m_translation;
+    glm::mat4& current	= in_stack.get();
+    current				= (*s_pCameraPerspective) * m_scale * m_rotation * m_translation * current;
 
     // Render Node
     glBindVertexArray	( m_vao	);
-    glUniformMatrix4fv	( s_transformUnif, 1, GL_FALSE, glm::value_ptr(current)	);
+    glUniformMatrix4fv	( s_mvpUniform, 1, GL_FALSE, glm::value_ptr(current)	);
 
     glDrawElements		( GL_TRIANGLES, m_sizeIndex, GL_UNSIGNED_SHORT, 0	);
 

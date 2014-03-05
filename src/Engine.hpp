@@ -12,6 +12,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "SceneNode.hpp"
+#include "MatrixStack.hpp"
+
 /******************************************************************************/
 
 namespace ShaderID
@@ -79,16 +82,15 @@ protected:
 
 private:
 
-	// Window
+    // Window
     sf::RenderWindow	m_window;
 
-	// Events
+    // Events
     sf::Event			m_event;
     bool				m_bQuit;
 
-	// Framerate calc / control / display
+    // Framerate calc / control / display
     sf::Clock			m_frameClock;
-    sf::Time			m_totalTime;
     sf::Time			m_frameElapsedTime;
     sf::Time			m_frameGoalTime;
     sf::Time			m_frameActualTime;
@@ -97,24 +99,22 @@ private:
     sf::Text			m_fpsMeter;
     bool				m_bLockFrameRate;
 
-	// Objects positions
-    glm::vec3			m_position;
-    GLfloat				m_rotation;
-    glm::mat4			m_transform	[2];
+    // Scene content
+    SceneNode*			m_pSceneRoot;
+    SceneNode*			m_pScenePyramid;
+    SceneNode*			m_pSceneCube;
+    MatrixStack			m_matrixStack;
+    float				m_rotation;
 
-	// View / Projection
+    // View / Projection
     glm::vec3			m_camPosition;
     glm::mat4			m_camera;
     glm::mat4			m_perspective;
     glm::mat4			m_viewProj;
 
-	// Handles
+    // Handles
     GLuint				m_shader;
-    GLuint				m_vao			[2];
-    GLuint				m_meshBufObj	[2];
-    GLuint				m_indexBufObj	[2];
-    GLuint				m_transfUniform;
-    GLuint				m_viewProjUniform;
+    GLuint				m_mvpUniform;
 
 };
 

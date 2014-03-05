@@ -5,13 +5,12 @@
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec4 color;
 
-uniform mat4 viewProj;
-uniform mat4 transform;
+uniform mat4 mvp;
 
 smooth out vec4 fragColor;
 
 void main()
 {
-    gl_Position	= viewProj * transform * position;
+	gl_Position	= mvp * position;
 	fragColor	= color;
 }

@@ -6,17 +6,17 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "RenderedNode.hpp"
+#include "SceneNode.hpp"
 
 /******************************************************************************/
 
-class IndexedDrawNode : public RenderedNode
+class IndexedDrawNode : public SceneNode
 {
 
 // Inits
 public:
 
-                    IndexedDrawNode		(float* in_pData, size_t in_sizeData,
+                    IndexedDrawNode		(GLfloat* in_pData, size_t in_sizeData,
                                          GLshort* in_pIndex, size_t in_sizeIndex);
     virtual			~IndexedDrawNode	();
 

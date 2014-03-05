@@ -5,23 +5,23 @@
 #include <set>
 #include <GL/glew.h>
 
-#include "RenderedNode.hpp"
+#include "SceneNode.hpp"
 
 /******************************************************************************/
 
-class ArrayDrawNode : public RenderedNode
+class ArrayDrawNode : public SceneNode
 {
 
 // Inits
 public:
 
-            ArrayDrawNode	(float* in_pData, size_t in_size);
+            ArrayDrawNode	(GLfloat* in_pData, size_t in_size);
     virtual	~ArrayDrawNode	();
 
 // Render
 public:
 
-    void	render			(MatrixStack& in_stack);
+    virtual void	render			(MatrixStack& in_stack);
 
 /******************************************************************************/
 
