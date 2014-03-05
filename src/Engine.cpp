@@ -6,18 +6,18 @@
 
 const float pyramidVertexData[] = {
     // Position
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-     1.0f,	-1.0f,	-1.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 1
+    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 2
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 3
+     1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
 
     // Color
-     1.0f,	 1.0f,	 1.0f,	1.0f,
-     1.0f,	 0.0f,	 0.0f,	1.0f,
-     0.0f,	 1.0f,	 0.0f,	1.0f,
-     0.0f,	 0.0f,	 1.0f,	1.0f,
-     0.0f,	 0.0f,	 0.0f,	1.0f,
+     1.0f,	 1.0f,	 1.0f,	1.0f,	// 0
+     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
+     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
+     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
+     0.0f,	 0.0f,	 0.0f,	1.0f,	// 4
 };
 
 const GLshort pyramidIndexData[] = {
@@ -28,37 +28,151 @@ const GLshort pyramidIndexData[] = {
     0, 	4,	1,
 
    // Base
-    1,	2, 	3,
-    1,	3,	4,
+    3,	2, 	1,
+    3,	1,	4,
 };
+
+//const float cubeVertexData[] = {
+//    // Position
+//    // Front face
+//    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
+//    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
+//     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+//
+//    // Back face
+//    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+//    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
+//     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+//     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
+//
+//    // Color
+//    // Front face
+//     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
+//     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
+//     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
+//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 3
+//
+//    // Back face
+//     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
+//     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
+//     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
+//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 7
+//};
 
 const float cubeVertexData[] = {
     // Position
     // Front face
-    -1.0f,	-1.0f,	 1.0f,	1.0f,
-    -1.0f,	 1.0f,	 1.0f,	1.0f,
-     1.0f,	 1.0f,	 1.0f,	1.0f,
-     1.0f,	-1.0f,	 1.0f,	1.0f,
+    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
+    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
 
-    // Back face
-    -1.0f,	-1.0f,	-1.0f,	1.0f,
-    -1.0f,	 1.0f,	-1.0f,	1.0f,
-     1.0f,	 1.0f,	-1.0f,	1.0f,
-     1.0f,	-1.0f,	-1.0f,	1.0f,
+    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
+     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+
+    // Left Face
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
+    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
+
+    // Back Face
+     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
+     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
+
+     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
+    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+
+    // Right Face
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
+     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
+
+    // Bottom Face
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+
+    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
+     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
+     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
+
+    // Top Face
+    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
+     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+
+    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
+     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
+     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
 
     // Color
     // Front face
      1.0f,	 0.0f,	 0.0f,	1.0f,
      0.0f,	 1.0f,	 0.0f,	1.0f,
      0.0f,	 0.0f,	 1.0f,	1.0f,
-     1.0f,	 1.0f,	 1.0f,	1.0f,
 
-    // Back face
      1.0f,	 0.0f,	 0.0f,	1.0f,
      0.0f,	 1.0f,	 0.0f,	1.0f,
      0.0f,	 0.0f,	 1.0f,	1.0f,
-     1.0f,	 1.0f,	 1.0f,	1.0f,
+
+    // Left Face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+    // Back Face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+    // Right Face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+    // Bottom Face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+    // Top Face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
 };
+
+
 
 const GLshort cubeIndexData[] = {
     // Front face
@@ -123,8 +237,8 @@ void Engine::init()
     // Cube
     glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Cube] );
     glBufferData	( GL_ARRAY_BUFFER,          sizeof(cubeVertexData), cubeVertexData, GL_STATIC_DRAW );
-    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Cube] );
-    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(cubeIndexData),  cubeIndexData,  GL_STATIC_DRAW );
+//    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Cube] );
+//    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(cubeIndexData),  cubeIndexData,  GL_STATIC_DRAW );
 
     glBindBuffer	( GL_ARRAY_BUFFER,          0 );
     glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  0 );
@@ -149,7 +263,7 @@ void Engine::init()
     m_transform[ObjectId::Cube]		= glm::translate(glm::mat4(1.0f), m_position);
 
     // Camera & Perspective
-    m_camPosition   = glm::vec3(0.0f, 0.0f, 7.0f);
+    m_camPosition   = glm::vec3(0.0f, 2.0f, 7.0f);
     m_camera		= glm::lookAt(
         m_camPosition,
         glm::vec3(0.f, 0.f, 0.f),
@@ -186,9 +300,8 @@ void Engine::init()
     glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Cube]	);
     glEnableVertexAttribArray	( ShaderID::Position	);
     glEnableVertexAttribArray	( ShaderID::Color		);
-    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
-    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*8)	);
-    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Cube]	);
+    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0						);
+    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*3*2*6)	);
 
     glBindVertexArray			( 0	);
 
@@ -275,7 +388,7 @@ void Engine::render()
     glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Cube])	);
 
     // Actual Draw
-    glDrawElements      ( GL_TRIANGLES, 3*2*6, GL_UNSIGNED_SHORT, 0    );
+    glDrawArrays		( GL_TRIANGLES, 0, 3*2*6	);
 
     // Cleanup
     glBindVertexArray	( 0	);
