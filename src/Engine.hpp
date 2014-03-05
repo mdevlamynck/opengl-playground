@@ -23,6 +23,17 @@ namespace ShaderID
     };
 }
 
+namespace ObjectId
+{
+    enum Type
+    {
+        Pyramid	= 0,
+        Cube	= 1,
+
+        Nb
+    };
+}
+
 class Engine
 {
 
@@ -70,14 +81,14 @@ private:
     glm::vec3			m_camPosition;
     glm::vec3			m_position;
     GLfloat				m_rotation;
-    glm::mat4			m_transform;
+    glm::mat4			m_transform	[2];
     glm::mat4			m_camera;
     glm::mat4			m_perspective;
     glm::mat4			m_viewProj;
 
     GLuint				m_shader;
-    GLuint				m_meshBufObj;
-    GLuint				m_indexBufObj;
+    GLuint				m_meshBufObj	[2];
+    GLuint				m_indexBufObj	[2];
     GLuint				m_transfUniform;
     GLuint				m_viewProjUniform;
 

@@ -4,7 +4,7 @@
 #include <fstream>
 #include "Engine.hpp"
 
-const float vertexData[] = {
+const float pyramidVertexData[] = {
     // Position
      0.0f,	 1.0f,	 0.0f,	1.0f,
      1.0f,	-1.0f,	 1.0f,	1.0f,
@@ -20,7 +20,7 @@ const float vertexData[] = {
      0.0f,	 0.0f,	 0.0f,	1.0f,
 };
 
-const GLshort indexData[] = {
+const GLshort pyramidIndexData[] = {
     // Pyramide faces
     0, 	1, 	2,
     0, 	2, 	3,
@@ -30,6 +30,61 @@ const GLshort indexData[] = {
    // Base
     1,	2, 	3,
     1,	3,	4,
+};
+
+const float cubeVertexData[] = {
+    // Position
+    // Front face
+    -1.0f,	-1.0f,	 1.0f,	1.0f,
+    -1.0f,	 1.0f,	 1.0f,	1.0f,
+     1.0f,	 1.0f,	 1.0f,	1.0f,
+     1.0f,	-1.0f,	 1.0f,	1.0f,
+
+    // Back face
+    -1.0f,	-1.0f,	-1.0f,	1.0f,
+    -1.0f,	 1.0f,	-1.0f,	1.0f,
+     1.0f,	 1.0f,	-1.0f,	1.0f,
+     1.0f,	-1.0f,	-1.0f,	1.0f,
+
+    // Color
+    // Front face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+     1.0f,	 1.0f,	 1.0f,	1.0f,
+
+    // Back face
+     1.0f,	 0.0f,	 0.0f,	1.0f,
+     0.0f,	 1.0f,	 0.0f,	1.0f,
+     0.0f,	 0.0f,	 1.0f,	1.0f,
+     1.0f,	 1.0f,	 1.0f,	1.0f,
+};
+
+const GLshort cubeIndexData[] = {
+    // Front face
+    0,	1,	2,
+    0,	2,	3,
+
+    // Left Face
+    4,	5,	1,
+    4,	1,	0,
+
+    // Back Face
+    7,	6,	5,
+    7,	5,	4,
+
+    // Right Face
+    3,	2,	6,
+    3,	6,	7,
+
+    // Bottom Face
+    4,	0,	3,
+    4,	3,	7,
+
+    // Top Face
+    1,	5,	6,
+    1,	6,	2,
+
 };
 
 Engine::Engine()
@@ -56,14 +111,18 @@ Engine::~Engine()
 void Engine::init()
 {
     // Init vertex / index buffer
-    glGenBuffers	( 1, &m_meshBufObj );
-    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj );
-    glBufferData	( GL_ARRAY_BUFFER,          sizeof(vertexData), vertexData, GL_STATIC_DRAW );
+    glGenBuffers	( 2, m_meshBufObj );
+    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Pyramid] );
+    glBufferData	( GL_ARRAY_BUFFER,          sizeof(pyramidVertexData), pyramidVertexData, GL_STATIC_DRAW );
+    glBindBuffer	( GL_ARRAY_BUFFER,          m_meshBufObj[ObjectId::Cube] );
+    glBufferData	( GL_ARRAY_BUFFER,          sizeof(cubeVertexData), cubeVertexData, GL_STATIC_DRAW );
     glBindBuffer	( GL_ARRAY_BUFFER,          0 );
 
-    glGenBuffers	( 1, &m_indexBufObj );
-    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj );
-    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(indexData),  indexData,  GL_STATIC_DRAW );
+    glGenBuffers	( 2, m_indexBufObj );
+    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Pyramid] );
+    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(pyramidIndexData),  pyramidIndexData,  GL_STATIC_DRAW );
+    glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  m_indexBufObj[ObjectId::Cube] );
+    glBufferData	( GL_ELEMENT_ARRAY_BUFFER,  sizeof(cubeIndexData),  cubeIndexData,  GL_STATIC_DRAW );
     glBindBuffer	( GL_ELEMENT_ARRAY_BUFFER,  0 );
 
     // Load the shaders
@@ -82,10 +141,11 @@ void Engine::init()
 
     // Position / Transformation
     m_position		= glm::vec3(0.0f);
-    m_transform     = glm::translate(glm::mat4(1.0f), m_position);
+    m_transform[ObjectId::Pyramid]	= glm::translate(glm::mat4(1.0f), m_position);
+    m_transform[ObjectId::Cube]		= glm::translate(glm::mat4(1.0f), m_position);
 
     // Camera & Perspective
-    m_camPosition   = glm::vec3(0.0f, 0.0f, 5.0f);
+    m_camPosition   = glm::vec3(0.0f, 0.0f, 7.0f);
     m_camera		= glm::lookAt(
         m_camPosition,
         glm::vec3(0.f, 0.f, 0.f),
@@ -98,7 +158,7 @@ void Engine::init()
     glEnable		( GL_DEPTH_TEST );
     glDepthMask		( GL_TRUE		);
     glDepthFunc 	( GL_LESS       );
-	glDepthRange	( 0.0f, 1.0f	);
+    glDepthRange	( 0.0f, 1.0f	);
 
     // Face culling
     glEnable	( GL_CULL_FACE	);
@@ -108,8 +168,8 @@ void Engine::init()
 
 void Engine::release()
 {
-    glDeleteBuffers	        ( 1, &m_meshBufObj	);
-    glDeleteBuffers	        ( 1, &m_indexBufObj	);
+    glDeleteBuffers	        ( 2, m_meshBufObj	);
+    glDeleteBuffers	        ( 2, m_indexBufObj	);
     glDeleteProgram	        ( m_shader			);
 }
 
@@ -143,14 +203,20 @@ void Engine::logic()
 {
     // update position
     m_totalTime		+= m_frameElapsedTime;
-    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds()) * 1.0f;
-    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds()) * 1.0f;
+
+    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds()) * 2.0f;
+    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds()) * 2.0f;
+    m_transform[ObjectId::Pyramid] 	= glm::translate	( glm::mat4(1.0f), m_position	);
+
+    m_position.x	= cos(M_PI / 2.0f * m_totalTime.asSeconds() + M_PI) * 2.0f;
+    m_position.z	= sin(M_PI / 2.0f * m_totalTime.asSeconds() + M_PI) * 2.0f;
+    m_transform[ObjectId::Cube] 	= glm::translate	( glm::mat4(1.0f), m_position	);
 
     // update rotation
     m_rotation		+= 1.f * m_frameElapsedTime.asSeconds();
 
-    m_transform 	= glm::translate	( glm::mat4(1.0f), m_position	);
-    m_transform 	= glm::rotate		( m_transform, m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
+    m_transform[ObjectId::Pyramid] 	= glm::rotate		( m_transform[ObjectId::Pyramid],	m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
+    m_transform[ObjectId::Cube] 	= glm::rotate		( m_transform[ObjectId::Cube],		m_rotation, glm::vec3(0.0f, 1.0f, 0.0f) );
 }
 
 void Engine::render()
@@ -163,20 +229,37 @@ void Engine::render()
     // Shader to use
     glUseProgram        ( m_shader  );
 
+    // Update data given to shader
+    glUniformMatrix4fv	( m_viewProjUniform,	1, GL_FALSE, glm::value_ptr(m_viewProj)	    );
+
+
+    // Pyramid
+    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Pyramid])	);
+
     // Data to use
-    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj	);
+    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Pyramid]	);
     glEnableVertexAttribArray	( ShaderID::Position	);
     glEnableVertexAttribArray	( ShaderID::Color		);
     glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
     glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*5)	);
-    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj    );
-
-    // Update data given to shader
-    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform)	);
-    glUniformMatrix4fv	( m_viewProjUniform,	1, GL_FALSE, glm::value_ptr(m_viewProj)	    );
+    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Pyramid]    );
 
     // Actual Draw
     glDrawElements      ( GL_TRIANGLES, 18, GL_UNSIGNED_SHORT, 0    );
+
+    // Cube
+    glUniformMatrix4fv	( m_transfUniform,		1, GL_FALSE, glm::value_ptr(m_transform[ObjectId::Cube])	);
+
+    // Data to use
+    glBindBuffer				( GL_ARRAY_BUFFER, m_meshBufObj[ObjectId::Cube]	);
+    glEnableVertexAttribArray	( ShaderID::Position	);
+    glEnableVertexAttribArray	( ShaderID::Color		);
+    glVertexAttribPointer		( ShaderID::Position,	4, GL_FLOAT, GL_FALSE, 0, 0			        );
+    glVertexAttribPointer		( ShaderID::Color,		4, GL_FLOAT, GL_FALSE, 0, (void*)(4*4*8)	);
+    glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, m_indexBufObj[ObjectId::Cube]    );
+
+    // Actual Draw
+    glDrawElements      ( GL_TRIANGLES, 3*2*6, GL_UNSIGNED_SHORT, 0    );
 
     // Cleanup
     glDisableVertexAttribArray	( ShaderID::Position	);
