@@ -44,7 +44,7 @@ void ArrayDrawNode::render(MatrixStack& in_stack)
 
     // Apply Node Transformations
     glm::mat4& current	= in_stack.get();
-    current				= (*s_pCameraPerspective) * m_scale * m_rotation * m_translation * current;
+    current				= (*s_pCameraPerspective) * current * m_translation * m_rotation * m_scale;
 
     // Render Node
     glBindVertexArray	( m_vao	);

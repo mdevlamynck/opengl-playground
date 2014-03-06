@@ -253,6 +253,11 @@ void Engine::init()
         glm::vec3(0.f, 1.f, 0.f)
     );
 
+    SceneNode::setMvpUniform		( m_mvpUniform );
+    SceneNode::setPositionShader	( 0	);
+    SceneNode::setColorShader		( 1 );
+    SceneNode::setCameraPerspective	( &m_viewProj	);
+
     resize(m_window.getSize().x, m_window.getSize().y);
 
     // Z Buffer
@@ -268,22 +273,17 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-//    m_pScenePyramid	= new IndexedDrawNode	( pyramidVertexData,	4*5*2,		pyramidIndexData,	3*(4+2*1)	);
+    m_pScenePyramid	= new IndexedDrawNode	( pyramidVertexData,	4*5*2,		pyramidIndexData,	3*(4+2*1)	);
     m_pSceneCube	= new ArrayDrawNode		( cubeVertexData,		4*3*2*6*2	);
 
-//    m_pScenePyramid	->setTranslation	( glm::vec3( 1.0f, 0.0f, 0.0f)	);
-    m_pSceneCube	->setTranslation	( glm::vec3(-0.0f, 0.0f, 0.0f)	);
+    m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
+    m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
 
-//    m_pScenePyramid	->setScale	( glm::vec3(1.0f)	);
+    m_pScenePyramid	->setScale	( glm::vec3(1.0f)	);
     m_pSceneCube	->setScale	( glm::vec3(1.0f)	);
 
-//    m_pSceneRoot	->addChild	( m_pScenePyramid );
+    m_pSceneRoot	->addChild	( m_pScenePyramid );
     m_pSceneRoot	->addChild	( m_pSceneCube );
-
-    SceneNode::setMvpUniform		( m_mvpUniform );
-    SceneNode::setPositionShader	( 0	);
-    SceneNode::setColorShader		( 1 );
-    SceneNode::setCameraPerspective	( &m_viewProj	);
 
     m_rotation		= 0.0f;
 }
@@ -295,7 +295,7 @@ void Engine::release()
     delete m_pSceneRoot;
 
     m_pSceneRoot	= NULL;
-//    m_pScenePyramid	= NULL;
+    m_pScenePyramid	= NULL;
     m_pSceneCube	= NULL;
 }
 
@@ -334,9 +334,9 @@ void Engine::logic()
     // update position
     m_rotation		= 1.0f * m_frameElapsedTime.asSeconds();
 
-//    m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 
-//    m_pScenePyramid	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pScenePyramid	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
     m_pSceneCube	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 }
 
@@ -496,4 +496,3 @@ void Engine::loadShader(const std::string in_path, std::string& out_code)
 }
 
 /******************************************************************************/
-

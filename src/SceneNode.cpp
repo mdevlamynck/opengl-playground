@@ -37,7 +37,7 @@ void SceneNode::render(MatrixStack& in_stack)
 
     // Apply Node Transformations
     glm::mat4& current	=	in_stack.get();
-    current				=	m_scale * m_rotation * m_translation * current;
+    current				*=	m_translation * m_rotation * m_scale;
 
     // Render Children
     for(SceneNode* child : m_children)
