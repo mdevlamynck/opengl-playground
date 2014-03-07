@@ -10,205 +10,6 @@
 
 /******************************************************************************/
 
-GLfloat pyramidVertexData[] = {
-    // Position
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 1
-    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 2
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 3
-     1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-
-    // Color
-     1.0f,	 1.0f,	 1.0f,	1.0f,	// 0
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
-     0.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-};
-
-GLshort pyramidIndexData[] = {
-    // Pyramide faces
-    0, 	1, 	2,
-    0, 	2, 	3,
-    0,	3, 	4,
-    0, 	4,	1,
-
-   // Base
-    3,	2, 	1,
-    3,	1,	4,
-};
-
-/******************************************************************************/
-
-//const float cubeVertexData[] = {
-//    // Position
-//    // Front face
-//    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
-//    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
-//     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-//
-//    // Back face
-//    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-//    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
-//     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-//     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
-//
-//    // Color
-//    // Front face
-//     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
-//     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
-//     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
-//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 3
-//
-//    // Back face
-//     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-//     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
-//     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
-//     1.0f,	 1.0f,	 1.0f,	1.0f,	// 7
-//};
-
-//const GLshort cubeIndexData[] = {
-//    // Front face
-//    0,	1,	2,
-//    0,	2,	3,
-//
-//    // Left Face
-//    4,	5,	1,
-//    4,	1,	0,
-//
-//    // Back Face
-//    7,	6,	5,
-//    7,	5,	4,
-//
-//    // Right Face
-//    3,	2,	6,
-//    3,	6,	7,
-//
-//    // Bottom Face
-//    4,	0,	3,
-//    4,	3,	7,
-//
-//    // Top Face
-//    1,	5,	6,
-//    1,	6,	2,
-//
-//};
-
-GLfloat cubeVertexData[] = {
-    // Position
-    // Front face
-    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
-    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
-
-    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
-     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-
-    // Left Face
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
-    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
-
-    // Back Face
-     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
-     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
-
-     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
-    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-
-    // Right Face
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
-     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
-
-    // Bottom Face
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-    -1.0f,	-1.0f,	 1.0f,	1.0f,	// 0
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-
-    -1.0f,	-1.0f,	-1.0f,	1.0f,	// 4
-     1.0f,	-1.0f,	 1.0f,	1.0f,	// 3
-     1.0f,	-1.0f,	-1.0f,	1.0f,	// 7
-
-    // Top Face
-    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-    -1.0f,	 1.0f,	-1.0f,	1.0f,	// 5
-     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-
-    -1.0f,	 1.0f,	 1.0f,	1.0f,	// 1
-     1.0f,	 1.0f,	-1.0f,	1.0f,	// 6
-     1.0f,	 1.0f,	 1.0f,	1.0f,	// 2
-
-    // Color
-    // Front face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 0
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
-
-    // Left Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 1
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 1
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 0
-
-    // Back Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 7
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 5
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 7
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 4
-
-    // Right Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 3
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 2
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 3
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 7
-
-    // Bottom Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 0
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 3
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 4
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 3
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 7
-
-    // Top Face
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 5
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 6
-
-     1.0f,	 0.0f,	 0.0f,	1.0f,	// 1
-     0.0f,	 1.0f,	 0.0f,	1.0f,	// 6
-     0.0f,	 0.0f,	 1.0f,	1.0f,	// 2
-};
-
-/******************************************************************************/
-
 Engine::Engine()
     : m_window(
             sf::VideoMode(800, 600),
@@ -273,8 +74,8 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-    m_pScenePyramid	= new IndexedDrawNode	( pyramidVertexData,	4*5*2,		pyramidIndexData,	3*(4+2*1)	);
-    m_pSceneCube	= new ArrayDrawNode		( cubeVertexData,		4*3*2*6*2	);
+    m_pScenePyramid	= new IndexedDrawNode	( "../../assets/suzane.obj"		);
+    m_pSceneCube	= new IndexedDrawNode	( "../../assets/torus.obj"	);
 
     m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
     m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
@@ -282,8 +83,8 @@ void Engine::init()
     m_pScenePyramid	->setScale	( glm::vec3(1.0f)	);
     m_pSceneCube	->setScale	( glm::vec3(1.0f)	);
 
-    m_pSceneRoot	->addChild	( m_pScenePyramid );
-    m_pSceneRoot	->addChild	( m_pSceneCube );
+    m_pSceneRoot	->addChild	( m_pScenePyramid	);
+    m_pSceneRoot	->addChild	( m_pSceneCube		);
 
     m_rotation		= 0.0f;
 }
@@ -357,9 +158,9 @@ void Engine::render()
     glUseProgram  			( 0 );
 
     // Draw the FPS meter with SFML
-    m_window.pushGLStates();
-    m_window.draw(m_fpsMeter);
-    m_window.popGLStates();
+    //m_window.pushGLStates();
+    //m_window.draw(m_fpsMeter);
+    //m_window.popGLStates();
 
     // Show the rendered frame
     m_window.display();

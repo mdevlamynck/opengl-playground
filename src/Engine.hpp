@@ -32,8 +32,8 @@ namespace ObjectId
 {
     enum Type
     {
-        Pyramid	= 0,
-        Cube	= 1,
+        Torus	= 0,
+        Suzane	= 1,
 
         Nb
     };
