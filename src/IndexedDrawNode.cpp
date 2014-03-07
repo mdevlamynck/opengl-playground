@@ -126,8 +126,6 @@ void IndexedDrawNode::loadObj(std::string in_objPath)
         line++;
     }
 
-    std::cout << beginVertexLine << " " << beginIndexLine << std::endl;
-
     file.clear();
     file.seekg(0, file.beg);
     line = 0;
