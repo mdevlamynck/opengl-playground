@@ -110,11 +110,17 @@ private:
     glm::vec3			m_camPosition;
     glm::mat4			m_camera;
     glm::mat4			m_perspective;
-    glm::mat4			m_viewProj;
+
+    // Lighting
+    glm::vec4			m_lightColor;
+    glm::vec4			m_lightDirection;
 
     // Handles
     GLuint				m_shader;
-    GLuint				m_mvpUniform;
+    GLuint				m_modelViewProjectionUniform;
+    GLuint				m_modelViewUniform;
+    GLuint				m_lightColorUniform;
+    GLuint				m_lightDirectionUniform;
 
 };
 
