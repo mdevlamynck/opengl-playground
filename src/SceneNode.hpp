@@ -48,7 +48,7 @@ public:
     static void		setModelViewProjectionUniform	(GLuint in_modelViewProjectionUniform);
     static void		setModelViewUniform				(GLuint in_modelViewUniform);
     static void		setLightColorUniform			(GLuint in_lightColorUniform);
-    static void		setLightDirectionUniform		(GLuint in_lightDirectionUniform);
+    static void		setLightPositionUniform		(GLuint in_lightPositionUniform);
 
     static void		setPositionShader				(GLuint in_positionShader);
     static void		setNormalShader					(GLuint in_normalShader);
@@ -76,7 +76,7 @@ protected:
     static GLuint		s_modelViewProjectionUniform;
     static GLuint		s_modelViewUniform;
     static GLuint		s_lightColorUniform;
-    static GLuint		s_lightDirectionUniform;
+    static GLuint		s_lightPositionUniform;
 
     static GLuint		s_positionShader;
     static GLuint		s_normalShader;

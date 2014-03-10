@@ -150,7 +150,7 @@ void ObjMeshNode::loadObj(std::string const& in_objPath)
     readData	( file, pPosition,	beginPosition,	sizePosition,	3	);
     readData	( file, pNormal,	beginNormal,	sizeNormal,		3	);
 
-    fillData	( pColor,	0.0f, 0.0f, 1.0f, 1.0f	);
+    fillData	( pColor,	0.2f, 0.2f, 1.0f, 1.0f	);
     fillData	( pUv,		0.0f, 0.0f				);
 
     readVertice	( file, setVertice,	beginFace, 		sizeFace,		3	);

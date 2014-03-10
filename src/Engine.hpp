@@ -113,7 +113,7 @@ private:
 
     // Lighting
     glm::vec4			m_lightColor;
-    glm::vec4			m_lightDirection;
+    glm::vec4			m_lightPosition;
     glm::vec4			m_ambiantLightColor;
 
     // Handles
@@ -121,7 +121,7 @@ private:
     GLuint				m_modelViewProjectionUniform;
     GLuint				m_modelViewUniform;
     GLuint				m_lightColorUniform;
-    GLuint				m_lightDirectionUniform;
+    GLuint				m_lightPositionUniform;
     GLuint				m_ambiantLightColorUniform;
 
 };

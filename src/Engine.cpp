@@ -51,7 +51,7 @@ void Engine::init()
     m_modelViewProjectionUniform	= glGetUniformLocation(m_shader, "modelViewProjection");
     m_modelViewUniform				= glGetUniformLocation(m_shader, "modelView");
     m_lightColorUniform				= glGetUniformLocation(m_shader, "lightColor");
-    m_lightDirectionUniform			= glGetUniformLocation(m_shader, "lightDirection");
+    m_lightPositionUniform			= glGetUniformLocation(m_shader, "lightPosition");
     m_ambiantLightColorUniform		= glGetUniformLocation(m_shader, "ambiantLightColor");
 
     // Camera & Perspective
@@ -64,19 +64,19 @@ void Engine::init()
 
     // Lighting
     m_lightColor			= glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-    m_lightDirection		= m_camera * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+    m_lightPosition			= m_camera * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
     m_ambiantLightColor		= glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 
     glUseProgram	( m_shader );
     glUniform4fv	( m_lightColorUniform,			1, glm::value_ptr(m_lightColor)			);
-    glUniform4fv	( m_lightDirectionUniform,		1, glm::value_ptr(m_lightDirection)		);
+    glUniform4fv	( m_lightPositionUniform,		1, glm::value_ptr(m_lightPosition)		);
     glUniform4fv	( m_ambiantLightColorUniform,	1, glm::value_ptr(m_ambiantLightColor)	);
     glUseProgram	( 0 );
 
     SceneNode::setModelViewProjectionUniform	( m_modelViewProjectionUniform	);
     SceneNode::setModelViewUniform				( m_modelViewUniform			);
     SceneNode::setLightColorUniform				( m_lightColorUniform 			);
-    SceneNode::setLightDirectionUniform			( m_lightDirectionUniform		);
+    SceneNode::setLightPositionUniform			( m_lightPositionUniform		);
     SceneNode::setPositionShader				( 0	);
     SceneNode::setNormalShader					( 1	);
     SceneNode::setColorShader					( 2 );
@@ -159,6 +159,8 @@ void Engine::logic()
 {
     // update position
     m_rotation		= 1.0f * m_frameElapsedTime.asSeconds();
+
+
 
     m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 

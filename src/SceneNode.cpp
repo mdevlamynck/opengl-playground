@@ -10,7 +10,7 @@
 GLuint		SceneNode::s_modelViewProjectionUniform		= 0;
 GLuint		SceneNode::s_modelViewUniform				= 1;
 GLuint		SceneNode::s_lightColorUniform				= 2;
-GLuint		SceneNode::s_lightDirectionUniform			= 3;
+GLuint		SceneNode::s_lightPositionUniform			= 3;
 
 GLuint		SceneNode::s_positionShader					= 0;
 GLuint		SceneNode::s_normalShader					= 1;
@@ -127,9 +127,9 @@ void SceneNode::setLightColorUniform(GLuint in_lightColorUniform)
 {
     s_lightColorUniform				= in_lightColorUniform;
 }
-void SceneNode::setLightDirectionUniform(GLuint in_lightDirectionUniform)
+void SceneNode::setLightPositionUniform(GLuint in_lightPositionUniform)
 {
-    s_lightDirectionUniform			= in_lightDirectionUniform;
+    s_lightPositionUniform			= in_lightPositionUniform;
 }
 
 void SceneNode::setPositionShader(GLuint in_positionShader)
