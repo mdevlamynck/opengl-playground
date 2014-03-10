@@ -26,10 +26,13 @@ Engine::Engine()
     m_fpsMeter.setFont(m_fpsFont);
 
     glewInit();
+
+    init();
 }
 
 Engine::~Engine()
 {
+    release();
 }
 
 void Engine::init()
@@ -96,8 +99,8 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-    m_pScenePyramid	= new ObjMeshNode	( false	);
-    m_pSceneCube	= new ObjMeshNode	( true	);
+    m_pScenePyramid	= new ObjMeshNode	( "../../assets/suzane-smooth.obj"	);
+    m_pSceneCube	= new ObjMeshNode	( "../../assets/torus-smooth.obj"	);
 
     m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
     m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
@@ -159,8 +162,8 @@ void Engine::logic()
 
     m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 
-    m_pScenePyramid	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
-    m_pSceneCube	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pScenePyramid	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pSceneCube	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 }
 
 void Engine::render()

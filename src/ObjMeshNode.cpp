@@ -3,206 +3,18 @@
 #include <sstream>
 #include <fstream>
 #include <cinttypes>
+#include <cstdarg>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "ObjMeshNode.hpp"
 
-GLfloat pyramidDataSmooth[] = {
-    // Vertex
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-1.0f,	 1.0f,
-    -1.0f,	-1.0f,	 1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-1.0f,	 1.0f,
-    -1.0f,	-1.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-1.0f,	-1.0f,
-     1.0f,	-1.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-1.0f,	-1.0f,
-     1.0f,	-1.0f,	 1.0f,
-
-    -1.0f,	-1.0f,	-1.0f,
-    -1.0f,	-1.0f,	 1.0f,
-     1.0f,	-1.0f,	 1.0f,
-     1.0f,	-1.0f,	-1.0f,
-
-    // Normal
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-2.0f,	 1.0f,
-    -1.0f,	-2.0f,	 1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-2.0f,	 1.0f,
-    -1.0f,	-2.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-2.0f,	-1.0f,
-     1.0f,	-2.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-2.0f,	-1.0f,
-     1.0f,	-2.0f,	 1.0f,
-
-    -1.0f,	-2.0f,	-1.0f,
-    -1.0f,	-2.0f,	 1.0f,
-     1.0f,	-2.0f,	 1.0f,
-     1.0f,	-2.0f,	-1.0f,
-
-    // Color
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-    // Uv
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-};
-
-GLfloat pyramidDataHard[] = {
-    // Vertex
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-1.0f,	 1.0f,
-    -1.0f,	-1.0f,	 1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-1.0f,	 1.0f,
-    -1.0f,	-1.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-    -1.0f,	-1.0f,	-1.0f,
-     1.0f,	-1.0f,	-1.0f,
-
-     0.0f,	 1.0f,	 0.0f,
-     1.0f,	-1.0f,	-1.0f,
-     1.0f,	-1.0f,	 1.0f,
-
-    -1.0f,	-1.0f,	-1.0f,
-    -1.0f,	-1.0f,	 1.0f,
-     1.0f,	-1.0f,	 1.0f,
-     1.0f,	-1.0f,	-1.0f,
-
-    // Normal
-     0.0f,	 0.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,
-
-    -1.0f,	 0.0f,	 0.0f,
-    -1.0f,	 0.0f,	 0.0f,
-    -1.0f,	 0.0f,	 0.0f,
-
-     0.0f,	 0.0f,	-1.0f,
-     0.0f,	 0.0f,	-1.0f,
-     0.0f,	 0.0f,	-1.0f,
-
-     1.0f,	 0.0f,	 0.0f,
-     1.0f,	 0.0f,	 0.0f,
-     1.0f,	 0.0f,	 0.0f,
-
-     0.0f,	-1.0f,	 0.0f,
-     0.0f,	-1.0f,	 0.0f,
-     0.0f,	-1.0f,	 0.0f,
-     0.0f,	-1.0f,	 0.0f,
-
-    // Color
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-     0.0f,	 0.0f,	 1.0f,	 1.0f,
-
-    // Uv
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-     0.0f,	 0.0f,
-};
-
-GLushort pyramidIndex[] = {
-    0,	1,	2,
-    3,	4,	5,
-    6,	7,	8,
-    9,	10,	11,
-    12,	13,	14,
-    12,	14,	15,
-};
-
 /******************************************************************************/
 
-ObjMeshNode::ObjMeshNode(bool in_bSmooth)
+ObjMeshNode::ObjMeshNode(std::string const& in_objPath)
 {
-    loadObj(in_bSmooth);
+    loadObj(in_objPath);
 }
 
 ObjMeshNode::~ObjMeshNode()
@@ -281,19 +93,246 @@ void ObjMeshNode::setupMesh(GLfloat* in_pData, GLushort* in_pIndex)
     glEnableVertexAttribArray	( s_uvShader		);
 }
 
-void ObjMeshNode::loadObj(bool in_bSmooth)
+void ObjMeshNode::loadObj(std::string const& in_objPath)
 {
-    m_nbVertex	= 4 * 3 + 4;
-    m_nbFace	= 6;
+    GLfloat*		pPosition		= NULL;
+    GLfloat*		pNormal			= NULL;
+    GLfloat*		pColor			= NULL;
+    GLfloat*		pUv				= NULL;
 
-    GLfloat*	pData	= new GLfloat	[ m_nbVertex * (3 + 3 + 4 + 2)	];
-    GLushort*	pIndex	= new GLushort	[ m_nbFace * 3	];
+    VertexSet		setVertice;
 
-    if(in_bSmooth)
-        pData	= pyramidDataSmooth;
-    else
-        pData	= pyramidDataHard;
-    pIndex	= pyramidIndex;
+    GLfloat*		pData			= NULL;
+    GLushort*		pIndex			= NULL;
 
-    setupMesh(pData, pIndex);
+    std::ifstream	file			( in_objPath, std::ios::in	);
+    std::string		readStr			= "";
+
+    size_t			line			= 0;
+    size_t			pos				= 0;
+
+    size_t			sizePosition	= 0;
+    size_t			sizeNormal		= 0;
+    size_t			sizeColor		= 1;
+    size_t			sizeUv			= 1;
+    size_t			sizeFace		= 0;
+
+    size_t			beginPosition	= 0u-1;
+    size_t			beginNormal		= 0u-1;
+    size_t			beginFace		= 0u-1;
+
+    // Find pos of every set of data
+    do
+    {
+        pos = file.tellg();
+
+        file >> readStr;
+
+        if		( readStr == "v"	)
+            setPositions(sizePosition,	beginPosition,	pos);
+        else if	( readStr == "vn"	)
+            setPositions(sizeNormal,	beginNormal,	pos);
+        else if	( readStr == "f"	)
+            setPositions(sizeFace,		beginFace,		pos);
+
+        line++;
+    } while(getline(file, readStr));
+
+    // Clear eof flag to be able to go back in the file
+    file.clear();
+
+    // Load data
+    pPosition	= new GLfloat [ sizePosition	* 3	];
+    pNormal		= new GLfloat [ sizeNormal		* 3	];
+    pColor		= new GLfloat [ sizeColor		* 4	];
+    pUv			= new GLfloat [ sizeUv			* 2	];
+
+    readData	( file, pPosition,	beginPosition,	sizePosition,	3	);
+    readData	( file, pNormal,	beginNormal,	sizeNormal,		3	);
+
+    fillData	( pColor,	0.0f, 0.0f, 1.0f, 1.0f	);
+    fillData	( pUv,		0.0f, 0.0f				);
+
+    readVertice	( file, setVertice,	beginFace, 		sizeFace,		3	);
+
+    // Resolve Vertice
+    m_nbVertex	= setVertice.size();
+    m_nbFace	= sizeFace;
+
+    pData		= new GLfloat	[ setVertice.size() * (3 + 3 + 4 + 2)	];
+    pIndex		= new GLushort	[ m_nbFace * 3	];
+
+    size_t i		= 0;
+    size_t offset	= 0;
+    for(Vertex vertex : setVertice)
+    {
+        offset = 0;
+
+        memcpy(pData + offset + 3 * i,	pPosition +  std::get<0>(vertex) * 3,	sizeof(GLfloat) * 3	);
+        offset +=  (m_nbVertex * 3);
+
+        memcpy(pData + offset + 3 * i,	pNormal + std::get<2>(vertex) * 3,		sizeof(GLfloat) * 3	);
+        offset +=  (m_nbVertex * 3);
+
+        memcpy(pData + offset + 4 * i,	pColor, 								sizeof(GLfloat) * 4	);
+        offset +=  (m_nbVertex * 4);
+
+        memcpy(pData + offset + 2 * i,	pUv, 									sizeof(GLfloat) * 2	);
+
+        i++;
+    }
+
+    // Construct Index
+    readIndex( file, pIndex, m_nbFace, setVertice, beginFace, sizeFace, 3	);
+
+    // Setup
+    setupMesh( pData, pIndex	);
+
+    // Cleanup
+    file.close();
+
+    delete pPosition;
+    delete pNormal;
+    delete pColor;
+    delete pUv;
+    delete pData;
+    delete pIndex;
+}
+
+/******************************************************************************/
+
+void ObjMeshNode::setPositions(size_t& out_sizeData, size_t& out_beginData, const size_t in_pos)
+{
+    out_sizeData++;
+    if(out_beginData == 0u-1)
+        out_beginData = in_pos;
+}
+
+void ObjMeshNode::readData(std::istream& in_stream, GLfloat* out_pData, const size_t in_beginData,
+                            const size_t in_length, const size_t in_valuePerLine)
+{
+    std::string			readStr		= "";
+    std::string			readLine	= "";
+    std::istringstream	lineStream;
+
+    in_stream.seekg(in_beginData);
+
+    for(size_t line = 0 ; line < in_length; line++	)
+    {
+        getline( in_stream, readLine	);
+        lineStream.str( readLine	);
+
+        lineStream >> readStr;
+
+        for( size_t value = 0; value < in_valuePerLine; value++	)
+            lineStream >> out_pData[ line * in_valuePerLine + value	];
+
+        lineStream.clear();
+    }
+}
+
+void ObjMeshNode::readVertice(std::istream& in_stream, VertexSet& out_setVertice, const size_t in_beginVertice,
+                                const size_t in_length, const size_t in_valuePerLine)
+{
+    std::string			readStr		= "";
+    std::string			readLine	= "";
+    std::istringstream	lineStream;
+
+    in_stream.seekg(in_beginVertice);
+
+    for(size_t line = 0 ; line < in_length; line++	)
+    {
+        getline( in_stream, readLine	);
+        lineStream.str(readLine);
+
+        lineStream >> readStr;
+
+        for( size_t value = 0; value < in_valuePerLine; value++	)
+        {
+            lineStream >> readStr;
+            out_setVertice.insert( readVertex( readStr	)	);
+        }
+
+        lineStream.clear();
+    }
+}
+
+Vertex ObjMeshNode::readVertex(std::string const& in_strVertex)
+{
+    std::string			readStr			= " ";
+    std::istringstream	vertexStream	( readStr	);
+    size_t				pos				= 0;
+    size_t				begPos			= 0;
+    size_t				findPos			= in_strVertex.find_first_of("/");
+    GLushort			ids[3]			= { 0, 0, 0	};
+
+    for(pos = 0; pos < 3; pos++	)
+    {
+        if	( findPos == std::string::npos	)
+            readStr	= in_strVertex.substr( begPos	);
+        else
+            readStr	= in_strVertex.substr( begPos, findPos - begPos	);
+
+        if	( readStr == ""	)
+            readStr = "1";
+
+        vertexStream.str( readStr	);
+        vertexStream >> ids[pos];
+        ids[pos]--;
+
+        begPos	= ++findPos;
+        findPos = in_strVertex.find_first_of( "/", findPos	);
+
+        vertexStream.clear();
+    }
+
+    return std::make_tuple( ids[0], ids[1], ids[2]	);
+}
+
+void ObjMeshNode::readIndex(std::istream& in_stream, GLushort* out_pIndex, size_t& out_sizeIndex, VertexSet const& in_setVertice,
+                            const size_t in_beginIndex, const size_t in_length, const size_t in_valuePerLine)
+{
+    std::string			readStr		= "";
+    std::string			readLine	= "";
+    std::istringstream	lineStream;
+
+    in_stream.seekg( in_beginIndex	);
+
+    for(size_t line = 0 ; line < in_length; line++	)
+    {
+        getline( in_stream, readLine	);
+        lineStream.str( readLine	);
+
+        lineStream >> readStr;
+
+        for( size_t value = 0; value < in_valuePerLine; value++	)
+        {
+            lineStream >> readStr;
+            VertexSet::iterator itVertex( in_setVertice.find( readVertex( readStr	)	)	);
+
+            size_t i = 0;
+            for(VertexSet::iterator it = in_setVertice.begin(); it != itVertex && it != in_setVertice.end(); it++)
+            {
+                i++;
+            }
+
+            // Obj faces are couter-clockwise, we want clockwise
+            out_pIndex[in_valuePerLine * line + in_valuePerLine - value - 1] = i;
+        }
+
+        lineStream.clear();
+    }
+}
+
+template<typename T, typename ... Trest>
+void ObjMeshNode::fillData(T* out_pData, const T in_arg, const Trest ... in_rest)
+{
+    fillData( out_pData, in_arg	);
+    fillData( out_pData + 1, in_rest ...	);
+}
+
+template<typename T>
+void ObjMeshNode::fillData(T* out_pData, const T in_arg)
+{
+    *out_pData = in_arg;
 }
