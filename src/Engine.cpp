@@ -63,7 +63,7 @@ void Engine::init()
     );
 
     // Lighting
-    m_lightColor			= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_lightColor			= glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
     m_lightDirection		= m_camera * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
     m_ambiantLightColor		= glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -99,8 +99,8 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-    m_pScenePyramid	= new ObjMeshNode	( "../../assets/suzane-smooth.obj"	);
-    m_pSceneCube	= new ObjMeshNode	( "../../assets/torus-smooth.obj"	);
+    m_pScenePyramid	= new ObjMeshNode	( "../../assets/suzane-realy-smooth.obj"	);
+    m_pSceneCube	= new ObjMeshNode	( "../../assets/torus-realy-smooth.obj"	);
 
     m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
     m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
