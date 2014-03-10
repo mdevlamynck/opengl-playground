@@ -101,8 +101,8 @@ private:
 
     // Scene content
     SceneNode*			m_pSceneRoot;
-    SceneNode*			m_pScenePyramid;
-    SceneNode*			m_pSceneCube;
+    SceneNode*			m_pSceneLight;
+    SceneNode*			m_pSceneSuzanne;
     MatrixStack			m_matrixStack;
     float				m_rotation;
 

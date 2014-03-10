@@ -5,8 +5,7 @@
 
 #include "Engine.hpp"
 
-#include "IndexedDrawNode.hpp"
-#include "ArrayDrawNode.hpp"
+#include "PointLightNode.hpp"
 #include "ObjMeshNode.hpp"
 
 /******************************************************************************/
@@ -55,7 +54,7 @@ void Engine::init()
     m_ambiantLightColorUniform		= glGetUniformLocation(m_shader, "ambiantLightColor");
 
     // Camera & Perspective
-    m_camPosition   = glm::vec3(0.0f, 2.0f, 7.0f);
+    m_camPosition   = glm::vec3(0.0f, 1.0f, 3.5f);
     m_camera		= glm::lookAt(
         m_camPosition,
         glm::vec3(0.f, 0.f, 0.f),
@@ -64,12 +63,10 @@ void Engine::init()
 
     // Lighting
     m_lightColor			= glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-    m_lightPosition			= m_camera * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
     m_ambiantLightColor		= glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 
     glUseProgram	( m_shader );
     glUniform4fv	( m_lightColorUniform,			1, glm::value_ptr(m_lightColor)			);
-    glUniform4fv	( m_lightPositionUniform,		1, glm::value_ptr(m_lightPosition)		);
     glUniform4fv	( m_ambiantLightColorUniform,	1, glm::value_ptr(m_ambiantLightColor)	);
     glUseProgram	( 0 );
 
@@ -99,17 +96,17 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-    m_pScenePyramid	= new ObjMeshNode	( "../../assets/suzane-realy-smooth.obj"	);
-    m_pSceneCube	= new ObjMeshNode	( "../../assets/torus-realy-smooth.obj"	);
+    m_pSceneLight	= new PointLightNode	();
+    m_pSceneSuzanne	= new ObjMeshNode		( "../../assets/suzanne-realy-smooth.obj"	);
 
-    m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
-    m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
+    m_pSceneLight	->setTranslation	( glm::vec3(0.0f, 2.0f, 7.0f)	);
+    m_pSceneSuzanne	->setTranslation	( glm::vec3(0.0f, 0.0f, 0.0f)	);
 
-    m_pScenePyramid	->setScale	( glm::vec3(1.0f)	);
-    m_pSceneCube	->setScale	( glm::vec3(1.0f)	);
+    m_pSceneLight	->setScale	( glm::vec3(1.0f)	);
+    m_pSceneSuzanne	->setScale	( glm::vec3(1.0f)	);
 
-    m_pSceneRoot	->addChild	( m_pScenePyramid	);
-    m_pSceneRoot	->addChild	( m_pSceneCube		);
+    m_pSceneRoot	->addChild	( m_pSceneLight		);
+    m_pSceneRoot	->addChild	( m_pSceneSuzanne	);
 
     m_rotation		= 0.0f;
 }
@@ -121,8 +118,8 @@ void Engine::release()
     delete m_pSceneRoot;
 
     m_pSceneRoot	= NULL;
-    m_pScenePyramid	= NULL;
-    m_pSceneCube	= NULL;
+    m_pSceneLight	= NULL;
+    m_pSceneSuzanne	= NULL;
 }
 
 /******************************************************************************/
@@ -160,12 +157,8 @@ void Engine::logic()
     // update position
     m_rotation		= 1.0f * m_frameElapsedTime.asSeconds();
 
-
-
-    m_pSceneRoot	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
-
-    m_pScenePyramid	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
-    m_pSceneCube	->rotate	( m_rotation*2,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pSceneLight	->rotate	( -m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
+    m_pSceneSuzanne	->rotate	( m_rotation,	glm::vec3(0.0f, 1.0f, 0.0f)	);
 }
 
 void Engine::render()
