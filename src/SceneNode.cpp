@@ -7,12 +7,18 @@
 
 /******************************************************************************/
 
-GLuint		SceneNode::s_mvpUniform			= 0;
+GLuint		SceneNode::s_modelViewProjectionUniform		= 0;
+GLuint		SceneNode::s_modelViewUniform				= 1;
+GLuint		SceneNode::s_lightColorUniform				= 2;
+GLuint		SceneNode::s_lightDirectionUniform			= 3;
 
-GLuint		SceneNode::s_positionShader		= 0;
-GLuint		SceneNode::s_colorShader		= 0;
+GLuint		SceneNode::s_positionShader					= 0;
+GLuint		SceneNode::s_normalShader					= 1;
+GLuint		SceneNode::s_colorShader					= 2;
+GLuint		SceneNode::s_uvShader						= 3;
 
-glm::mat4*	SceneNode::s_pCameraPerspective	= NULL;
+glm::mat4*	SceneNode::s_pViewMatrix					= NULL;
+glm::mat4*	SceneNode::s_pProjectionMatrix				= NULL;
 
 /******************************************************************************/
 
@@ -109,9 +115,21 @@ void SceneNode::setScale(glm::vec3 in_factors)
 
 /******************************************************************************/
 
-void SceneNode::setMvpUniform(GLuint in_mvpUniform)
+void SceneNode::setModelViewProjectionUniform(GLuint in_modelViewProjectionUniform)
 {
-    s_mvpUniform		= in_mvpUniform;
+    s_modelViewProjectionUniform	= in_modelViewProjectionUniform;
+}
+void SceneNode::setModelViewUniform(GLuint in_modelViewUniform)
+{
+    s_modelViewUniform				= in_modelViewUniform;
+}
+void SceneNode::setLightColorUniform(GLuint in_lightColorUniform)
+{
+    s_lightColorUniform				= in_lightColorUniform;
+}
+void SceneNode::setLightDirectionUniform(GLuint in_lightDirectionUniform)
+{
+    s_lightDirectionUniform			= in_lightDirectionUniform;
 }
 
 void SceneNode::setPositionShader(GLuint in_positionShader)
@@ -119,14 +137,29 @@ void SceneNode::setPositionShader(GLuint in_positionShader)
     s_positionShader	= in_positionShader;
 }
 
+void SceneNode::setNormalShader(GLuint in_normalShader)
+{
+    s_normalShader		= in_normalShader;
+}
+
 void SceneNode::setColorShader(GLuint in_colorShader)
 {
     s_colorShader		= in_colorShader;
 }
 
-void SceneNode::setCameraPerspective(glm::mat4* in_pCameraPerspective)
+void SceneNode::setUvShader(GLuint in_uvShader)
 {
-    s_pCameraPerspective	= in_pCameraPerspective;
+    s_uvShader			= in_uvShader;
+}
+
+void SceneNode::setViewMatrix(glm::mat4* in_pViewMatrix)
+{
+    s_pViewMatrix			= in_pViewMatrix;
+}
+
+void SceneNode::setProjectionMatrix(glm::mat4* in_pProjectionMatrix)
+{
+    s_pProjectionMatrix	= in_pProjectionMatrix;
 }
 
 /******************************************************************************/

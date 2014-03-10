@@ -7,6 +7,7 @@
 
 #include "IndexedDrawNode.hpp"
 #include "ArrayDrawNode.hpp"
+#include "ObjMeshNode.hpp"
 
 /******************************************************************************/
 
@@ -25,10 +26,13 @@ Engine::Engine()
     m_fpsMeter.setFont(m_fpsFont);
 
     glewInit();
+
+    init();
 }
 
 Engine::~Engine()
 {
+    release();
 }
 
 void Engine::init()
@@ -44,7 +48,11 @@ void Engine::init()
     std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
 
     // Set uniforms
-    m_mvpUniform		= glGetUniformLocation(m_shader, "mvp");
+    m_modelViewProjectionUniform	= glGetUniformLocation(m_shader, "modelViewProjection");
+    m_modelViewUniform				= glGetUniformLocation(m_shader, "modelView");
+    m_lightColorUniform				= glGetUniformLocation(m_shader, "lightColor");
+    m_lightDirectionUniform			= glGetUniformLocation(m_shader, "lightDirection");
+    m_ambiantLightColorUniform		= glGetUniformLocation(m_shader, "ambiantLightColor");
 
     // Camera & Perspective
     m_camPosition   = glm::vec3(0.0f, 2.0f, 7.0f);
@@ -54,10 +62,27 @@ void Engine::init()
         glm::vec3(0.f, 1.f, 0.f)
     );
 
-    SceneNode::setMvpUniform		( m_mvpUniform );
-    SceneNode::setPositionShader	( 0	);
-    SceneNode::setColorShader		( 1 );
-    SceneNode::setCameraPerspective	( &m_viewProj	);
+    // Lighting
+    m_lightColor			= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_lightDirection		= m_camera * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+    m_ambiantLightColor		= glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+
+    glUseProgram	( m_shader );
+    glUniform4fv	( m_lightColorUniform,			1, glm::value_ptr(m_lightColor)			);
+    glUniform4fv	( m_lightDirectionUniform,		1, glm::value_ptr(m_lightDirection)		);
+    glUniform4fv	( m_ambiantLightColorUniform,	1, glm::value_ptr(m_ambiantLightColor)	);
+    glUseProgram	( 0 );
+
+    SceneNode::setModelViewProjectionUniform	( m_modelViewProjectionUniform	);
+    SceneNode::setModelViewUniform				( m_modelViewUniform			);
+    SceneNode::setLightColorUniform				( m_lightColorUniform 			);
+    SceneNode::setLightDirectionUniform			( m_lightDirectionUniform		);
+    SceneNode::setPositionShader				( 0	);
+    SceneNode::setNormalShader					( 1	);
+    SceneNode::setColorShader					( 2 );
+    SceneNode::setUvShader						( 3	);
+    SceneNode::setViewMatrix					( &m_camera	);
+    SceneNode::setProjectionMatrix				( &m_perspective	);
 
     resize(m_window.getSize().x, m_window.getSize().y);
 
@@ -74,8 +99,8 @@ void Engine::init()
 
     // Set scene content
     m_pSceneRoot	= new SceneNode			();
-    m_pScenePyramid	= new IndexedDrawNode	( "../../assets/suzane.obj"		);
-    m_pSceneCube	= new IndexedDrawNode	( "../../assets/torus.obj"	);
+    m_pScenePyramid	= new ObjMeshNode	( "../../assets/suzane-smooth.obj"	);
+    m_pSceneCube	= new ObjMeshNode	( "../../assets/torus-smooth.obj"	);
 
     m_pScenePyramid	->setTranslation	( glm::vec3( 2.0f, 0.0f, 0.0f)	);
     m_pSceneCube	->setTranslation	( glm::vec3(-2.0f, 0.0f, 0.0f)	);
@@ -177,8 +202,6 @@ void Engine::resize(uint32_t in_uiWidth, uint32_t in_uiHeight)
         0.1f,
         100.f
     );
-
-    m_viewProj = m_perspective * m_camera;
 
     glViewport(0, 0, (GLsizei) in_uiWidth, (GLsizei) in_uiHeight);
 

@@ -37,11 +37,11 @@ void IndexedDrawNode::render(MatrixStack& in_stack)
 
     // Apply Node Transformations
     glm::mat4& current	= in_stack.get();
-    current				= (*s_pCameraPerspective) * current * m_translation * m_rotation * m_scale;
+    current				= (*s_pProjectionMatrix) * (*s_pViewMatrix) * current * m_translation * m_rotation * m_scale;
 
     // Render Node
     glBindVertexArray	( m_vao	);
-    glUniformMatrix4fv	( s_mvpUniform, 1, GL_FALSE, glm::value_ptr(current)	);
+    glUniformMatrix4fv	( s_modelViewProjectionUniform, 1, GL_FALSE, glm::value_ptr(current)	);
 
     glDrawElements		( GL_TRIANGLES, m_sizeIndex, GL_UNSIGNED_SHORT, 0	);
 
